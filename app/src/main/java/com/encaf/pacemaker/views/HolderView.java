@@ -1,0 +1,61 @@
+package com.encaf.pacemaker.views;
+
+import android.content.Context;
+import androidx.cardview.widget.CardView;
+import android.util.AttributeSet;
+import android.widget.TextView;
+
+import com.encaf.pacemaker.R;
+import com.encaf.pacemaker.model.Term;
+
+public abstract class HolderView extends CardView {
+
+    private boolean editable;
+
+    protected TextView captionTextView;
+    protected TextView valueTextView;
+    protected Term term;
+
+    public HolderView(Context context) {
+        super(context);
+    }
+
+    public HolderView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public HolderView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        this.captionTextView = (TextView) findViewById(R.id.caption);
+        this.valueTextView = (TextView) findViewById(R.id.value);
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+        this.valueTextView.setEnabled(editable);
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public abstract void showCaption(int position);
+
+    public void bind(Term term) {
+        this.term = term;
+        bind();
+    }
+
+    public Term getTerm() {
+        return term;
+    }
+
+    protected void bind() {
+        this.valueTextView.setText(term.asText());
+    }
+}

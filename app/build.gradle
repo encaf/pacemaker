@@ -5,7 +5,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.marcospoerl.simplypace"
+        applicationId "com.encaf.pacemaker"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 7

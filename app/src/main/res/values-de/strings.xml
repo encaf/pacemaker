@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simply Pace</string>
+    <string name="app_name">Pace Maker</string>
     <string name="title_activity_help">Hilfe</string>
     <string name="title_activity_license_info">Lizenzhinweise</string>
     <string name="action_help">Hilfe</string>

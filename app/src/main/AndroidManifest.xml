@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.marcospoerl.simplypace"
+<manifest package="com.encaf.pacemaker"
           xmlns:android="http://schemas.android.com/apk/res/android"
           android:installLocation="auto">
 
@@ -10,22 +10,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.encaf.pacemaker.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name="com.encaf.pacemaker.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.encaf.pacemaker.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".LicenseInfoActivity"
+            android:name="com.encaf.pacemaker.LicenseInfoActivity"
             android:label="@string/title_activity_license_info"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.encaf.pacemaker.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
