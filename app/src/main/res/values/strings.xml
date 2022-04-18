@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pace Maker</string>
-    <string name="title_activity_help">Help</string>
+    <string name="pace">Pace</string>
+    <string name="maker">Maker</string>
+    <string name="title_activity_about">About</string>
     <string name="title_activity_license_info">License info</string>
     <string name="action_help">Help</string>
     <string name="action_license_info">License info</string>
