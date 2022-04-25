@@ -21,6 +21,7 @@ import com.encaf.pacemaker.model.PaceTerm;
 import com.encaf.pacemaker.model.Term;
 import com.encaf.pacemaker.model.TimeTerm;
 import com.encaf.pacemaker.views.HolderView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.woxthebox.draglistview.DragListView;
 
 import java.math.BigDecimal;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(this::startHelpActivity);
         createListAdapter();
         setupListView();
     }
@@ -70,17 +73,6 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_help:
-                startHelpActivity();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -106,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
 
     private PaceMode getPaceMode(){
         final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        PaceMode paceMode = PaceMode.valueOf(preferences.getString(PACE_MODE_KEY, PaceMode.MIN.toString()));
-        return paceMode;
+        return PaceMode.valueOf(preferences.getString(PACE_MODE_KEY, PaceMode.MIN.toString()));
     }
 
     private void updatePaceMode(PaceMode paceMode){
@@ -132,29 +123,23 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         this.termAdapter.add(this.timeTerm, preferences.getInt(TIME_POS_KEY, 1));
         this.termAdapter.add(this.paceTerm, preferences.getInt(PACE_POS_KEY, 2));
         this.termAdapter.notifyDataSetChanged();
-        this.termAdapter.setOnItemLongClickedListener(new TermAdapter.OnItemLongClickedListener() {
-            @Override
-            public void onItemLongClicked(HolderView holderView) {
-                if (holderView.getTerm().getType() == Term.TYPE_PACE){
-                    showPaceModePicker();
-                }
+        this.termAdapter.setOnItemLongClickedListener(holderView -> {
+            if (holderView.getTerm().getType() == Term.TYPE_PACE){
+                showPaceModePicker();
             }
         });
-        this.termAdapter.setOnItemClickedListener(new TermAdapter.OnItemClickedListener() {
-            @Override
-            public void onItemClicked(HolderView holderView) {
-                if (holderView.isEditable()) {
-                    switch (holderView.getTerm().getType()) {
-                        case Term.TYPE_DISTANCE:
-                            showDistancePicker();
-                            break;
-                        case Term.TYPE_TIME:
-                            showTimePicker();
-                            break;
-                        case Term.TYPE_PACE:
-                            showPacePicker();
-                            break;
-                    }
+        this.termAdapter.setOnItemClickedListener(holderView -> {
+            if (holderView.isEditable()) {
+                switch (holderView.getTerm().getType()) {
+                    case Term.TYPE_DISTANCE:
+                        showDistancePicker();
+                        break;
+                    case Term.TYPE_TIME:
+                        showTimePicker();
+                        break;
+                    case Term.TYPE_PACE:
+                        showPacePicker();
+                        break;
                 }
             }
         });
@@ -180,10 +165,10 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         editor.putInt(DISTANCE_POS_KEY, this.termAdapter.getPosition(this.distanceTerm));
         editor.putInt(TIME_POS_KEY, this.termAdapter.getPosition(this.timeTerm));
         editor.putInt(PACE_POS_KEY, this.termAdapter.getPosition(this.paceTerm));
-        editor.commit();
+        editor.apply();
     }
 
-    private void startHelpActivity() {
+    private void startHelpActivity(View view) {
         final Intent intent = new Intent(this, HelpActivity.class);
         startActivity(intent);
     }
@@ -200,20 +185,17 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.title_pace_mode_dialog);
         builder.setNegativeButton(android.R.string.cancel, null);
-        builder.setItems(R.array.pace_modes_array, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                switch (i){
-                    case 0:
-                        updatePaceMode(MIN);
-                        break;
-                    case 1:
-                        updatePaceMode(KMH);
-                        break;
-                    case 2:
-                        updatePaceMode(MIN100);
-                        break;
-                }
+        builder.setItems(R.array.pace_modes_array, (dialogInterface, i) -> {
+            switch (i){
+                case 0:
+                    updatePaceMode(MIN);
+                    break;
+                case 1:
+                    updatePaceMode(KMH);
+                    break;
+                case 2:
+                    updatePaceMode(MIN100);
+                    break;
             }
         });
         final AlertDialog dialog = builder.create();
@@ -224,18 +206,15 @@ public class MainActivity extends AppCompatActivity implements NumberPickerDialo
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.title_distance_dialog);
         builder.setNegativeButton(android.R.string.cancel, null);
-        builder.setItems(R.array.distance_array, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (i == 0) {
-                    showCustomDistancePicker();
-                } else {
-                    final String[] distances = getResources().getStringArray(R.array.distance_array);
-                    final String selectedDistance = distances[i].replaceAll("[^\\d.]+", "");
-                    final BigDecimal distanceInKm = new BigDecimal(selectedDistance);
-                    distanceTerm.setDistanceInKilometer(distanceInKm);
-                    calculateTerm();
-                }
+        builder.setItems(R.array.distance_array, (dialogInterface, i) -> {
+            if (i == 0) {
+                showCustomDistancePicker();
+            } else {
+                final String[] distances = getResources().getStringArray(R.array.distance_array);
+                final String selectedDistance = distances[i].replaceAll("[^\\d.]+", "");
+                final BigDecimal distanceInKm = new BigDecimal(selectedDistance);
+                distanceTerm.setDistanceInKilometer(distanceInKm);
+                calculateTerm();
             }
         });
 

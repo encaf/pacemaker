@@ -17,10 +17,22 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="TextAppearance.Caption" parent="android:TextAppearance.Medium">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/bpWhite</item>
+        <item name="android:fontFamily">@font/crimson_pro_light</item>
     </style>
 
     <style name="TextAppearance.Value" parent="android:TextAppearance.Large">
-        <item name="android:textSize">36sp</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/bpWhite</item>
+        <item name="android:fontFamily">@font/work_sans_medium</item>
+    </style>
+
+    <style name="TextAppearance.Title" parent="android:TextAppearance.Large">
+        <item name="android:textSize">60sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/bpLight_gray</item>
+        <item name="android:fontFamily">@font/crimson_pro_light</item>
     </style>
 
 </resources>
